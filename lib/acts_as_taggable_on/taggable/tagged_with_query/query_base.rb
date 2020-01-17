@@ -29,9 +29,9 @@ module ActsAsTaggableOn::Taggable::TaggedWithQuery
       matches_attribute = matches_attribute.lower unless ActsAsTaggableOn.strict_case_match
 
       if options[:wild].present?
-        tag_arel_table[:name].matches("%#{escaped_tag(tag)}%", "!")
+        matches_attribute.matches("%#{escaped_tag(tag)}%", "!")
       else
-        tag_arel_table[:name].matches(escaped_tag(tag), "!")
+        matches_attribute.matches(escaped_tag(tag), "!")
       end
     end
 
@@ -48,7 +48,7 @@ module ActsAsTaggableOn::Taggable::TaggedWithQuery
 
     def escaped_tag(tag)
       tag = tag.downcase unless ActsAsTaggableOn.strict_case_match
-      tag.gsub(/[!%_]/) { |x| '!' + x }
+      ActsAsTaggableOn::Utils.escape_like(tag)
     end
 
     def adjust_taggings_alias(taggings_alias)

@@ -1,10 +1,12 @@
 module ActsAsTaggableOn
   class Tagging < ::ActiveRecord::Base #:nodoc:
+    self.table_name = ActsAsTaggableOn.taggings_table
+
     DEFAULT_CONTEXT = 'tags'
     belongs_to :tag, class_name: '::ActsAsTaggableOn::Tag', counter_cache: ActsAsTaggableOn.tags_counter
     belongs_to :taggable, polymorphic: true
 
-    belongs_to :tagger, {polymorphic: true}.tap {|o| o.merge!(optional: true) if ActsAsTaggableOn::Utils.active_record5? }
+    belongs_to :tagger, { polymorphic: true, optional: true }
 
     scope :owned_by, ->(owner) { where(tagger: owner) }
     scope :not_owned, -> { where(tagger_id: nil, tagger_type: nil) }

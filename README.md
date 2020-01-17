@@ -57,7 +57,7 @@ was used.
 To use it, add it to your Gemfile:
 
 ```ruby
-gem 'acts-as-taggable-on', '~> 4.0'
+gem 'acts-as-taggable-on', '~> 6.0'
 ```
 
 and bundle:
@@ -121,6 +121,7 @@ Add and remove a single tag
 ```ruby
 @user.tag_list.add("awesome")   # add a single tag. alias for <<
 @user.tag_list.remove("awesome") # remove a single tag
+@user.save # save to persist tag_list
 ```
 
 Add and remove multiple tags in an array
@@ -128,6 +129,7 @@ Add and remove multiple tags in an array
 ```ruby
 @user.tag_list.add("awesome", "slick")
 @user.tag_list.remove("awesome", "slick")
+@user.save
 ```
 
 You can also add and remove tags in format of String. This would
@@ -484,6 +486,13 @@ If you would like to have an exact match covering special characters with MySql:
 
 ```ruby
 ActsAsTaggableOn.force_binary_collation = true
+```
+
+If you would like to specify table names:
+
+```ruby
+ActsAsTaggableOn.tags_table = 'aato_tags'
+ActsAsTaggableOn.taggings_table = 'aato_taggings'
 ```
 
 If you want to change the default delimiter (it defaults to ','). You can also pass in an array of delimiters such as ([',', '|']):
